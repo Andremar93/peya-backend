@@ -10,7 +10,10 @@ app.use(express.json()); // Parsear JSON
 const PORT = process.env.PORT || 4000;
 
 // Conexión a MongoDB
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI, {
+  dbName: 'PeyaDB',
+})
+
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('DB connection error:', err));
 
