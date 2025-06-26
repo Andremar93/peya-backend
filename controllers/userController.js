@@ -3,16 +3,18 @@ const User = require('../models/User');
 // Registro de usuario
 const registerUser = async (req, res) => {
   try {
-    const { email, fullName, encryptedPassword } = req.body;
+    console.log('RegisterUser')
+    const { email, fullName, encryptedPassword , nationality, userImageUrl} = req.body;
 
+    console.log(email, fullName, encryptedPassword , nationality, userImageUrl)
     const exists = await User.findOne({ email });
     if (exists) {
       return res.status(409).json({ message: 'El usuario ya existe' });
     }
 
-    const newUser = new User({ email, fullName, encryptedPassword });
+    const newUser = new User({ email, fullName, encryptedPassword, nationality , userImageUrl });
     const saved = await newUser.save();
-    res.status(201).json(saved);
+    res.status(201).json({user: saved});
   } catch (error) {
     res.status(500).json({ message: 'Error al registrar usuario', error });
   }
@@ -21,6 +23,7 @@ const registerUser = async (req, res) => {
 // Login (validación simple)
 const loginUser = async (req, res) => {
   try {
+    console.log('Login connection')
     const { email, encryptedPassword } = req.body;
 
     const user = await User.findOne({ email });

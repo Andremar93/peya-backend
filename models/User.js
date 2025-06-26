@@ -17,6 +17,10 @@ const UserSchema = new mongoose.Schema({
   encryptedPassword: {
     type: String,
     required: true
+  },
+  nationality: {
+    type: String,
+    required: true
   }
 }, { timestamps: true });
 
