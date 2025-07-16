@@ -4,17 +4,17 @@ const User = require('../models/User');
 const registerUser = async (req, res) => {
   try {
     console.log('RegisterUser')
-    const { email, fullName, encryptedPassword , nationality, userImageUrl} = req.body;
+    const { email, fullName, encryptedPassword, nationality, userImageUrl } = req.body;
 
-    console.log(email, fullName, encryptedPassword , nationality, userImageUrl)
+    console.log(email, fullName, encryptedPassword, nationality, userImageUrl)
     const exists = await User.findOne({ email });
     if (exists) {
       return res.status(409).json({ message: 'El usuario ya existe' });
     }
 
-    const newUser = new User({ email, fullName, encryptedPassword, nationality , userImageUrl });
+    const newUser = new User({ email, fullName, encryptedPassword, nationality, userImageUrl });
     const saved = await newUser.save();
-    res.status(201).json({user: saved});
+    res.status(201).json({ user: saved });
   } catch (error) {
     res.status(500).json({ message: 'Error al registrar usuario', error });
   }
@@ -27,6 +27,7 @@ const loginUser = async (req, res) => {
     const { email, encryptedPassword } = req.body;
 
     const user = await User.findOne({ email });
+    console.log(`user: ${user}`)
     if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
 
     if (user.encryptedPassword !== encryptedPassword) {
@@ -53,20 +54,25 @@ const getUserByEmail = async (req, res) => {
 // Actualizar usuario por email
 const updateUserInfo = async (req, res) => {
   try {
-    const { fullName, userImageUrl } = req.body;
+    const { fullName, userImageUrl, nationality } = req.body;
 
     // Construimos solo los campos que sí queremos actualizar
-    const updateFields = { fullName };
+    const updateFields = { fullName, nationality };
 
     if (userImageUrl !== undefined && userImageUrl !== null && userImageUrl.trim() !== '') {
       updateFields.userImageUrl = userImageUrl;
     }
 
+    console.log('UPDATE USER INFO: ',req.params.email)
+    const email = decodeURIComponent(req.params.email);
+
     const user = await User.findOneAndUpdate(
-      { email: req.params.email },
+      { email: email },
       updateFields,
       { new: true }
     );
+
+    console.log(user)
 
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });

@@ -22,6 +22,8 @@ const { createOrder, getOrders } = require('../controllers/orderController');
  *             properties:
  *               orderId:
  *                 type: string
+ *               userId:
+ *                 type: string
  *               productIds:
  *                 type: array
  *                 items:

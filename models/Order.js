@@ -6,7 +6,11 @@ const CartItemSchema = new mongoose.Schema({
   imageUrl: String,
   price: Number,
   hasDrink: Boolean,
-  quantity: Number
+  quantity: Number,
+  categories: {
+    type: [String],            
+    default: [],              
+  }
 });
 
 const OrderSchema = new mongoose.Schema({
@@ -15,8 +19,13 @@ const OrderSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  userId: {
+    type: String,
+    required: true
+  },
   productIds: [CartItemSchema],
   total: {
+
     type: Number,
     required: true
   },
@@ -25,5 +34,4 @@ const OrderSchema = new mongoose.Schema({
     required: true
   }
 }, { timestamps: true });
-
 module.exports = mongoose.model('Order', OrderSchema);
