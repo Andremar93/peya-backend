@@ -66,5 +66,7 @@ const { createOrder, getOrders } = require('../controllers/orderController');
 // Endpoints
 router.post('/', createOrder);
 router.get('/', getOrders);
+// GET /orders/user/:userId
+router.get('/user/:userId', orderController.getOrdersByUserId);
 
 module.exports = router;

@@ -3,10 +3,8 @@ const User = require('../models/User');
 // Registro de usuario
 const registerUser = async (req, res) => {
   try {
-    console.log('RegisterUser')
     const { email, fullName, encryptedPassword, nationality, userImageUrl } = req.body;
 
-    console.log(email, fullName, encryptedPassword, nationality, userImageUrl)
     const exists = await User.findOne({ email });
     if (exists) {
       return res.status(409).json({ message: 'El usuario ya existe' });
@@ -23,11 +21,11 @@ const registerUser = async (req, res) => {
 // Login (validación simple)
 const loginUser = async (req, res) => {
   try {
-    console.log('Login connection')
+
     const { email, encryptedPassword } = req.body;
 
     const user = await User.findOne({ email });
-    console.log(`user: ${user}`)
+
     if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
 
     if (user.encryptedPassword !== encryptedPassword) {
@@ -63,7 +61,6 @@ const updateUserInfo = async (req, res) => {
       updateFields.userImageUrl = userImageUrl;
     }
 
-    console.log('UPDATE USER INFO: ',req.params.email)
     const email = decodeURIComponent(req.params.email);
 
     const user = await User.findOneAndUpdate(
@@ -72,7 +69,6 @@ const updateUserInfo = async (req, res) => {
       { new: true }
     );
 
-    console.log(user)
 
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
