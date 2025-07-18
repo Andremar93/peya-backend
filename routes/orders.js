@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createOrder, getOrders } = require('../controllers/orderController');
+const { createOrder, getOrders, getOrdersByUserId } = require('../controllers/orderController');
 
 /**
  * @swagger
@@ -61,12 +61,14 @@ const { createOrder, getOrders } = require('../controllers/orderController');
  *         description: Lista de pedidos
  *       500:
  *         description: Error en el servidor
+ * 
+ * 
  */
 
 // Endpoints
 router.post('/', createOrder);
 router.get('/', getOrders);
 // GET /orders/user/:userId
-router.get('/user/:userId', orderController.getOrdersByUserId);
+router.get('/user/:userId', getOrdersByUserId);
 
 module.exports = router;
